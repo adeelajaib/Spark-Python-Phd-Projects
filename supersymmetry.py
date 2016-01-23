@@ -3,19 +3,20 @@
 from pyspark import SparkConf, SparkContext
 import collections
 
+#to use all the cores of your computer replace local by local[*]
+
 conf = SparkConf().setMaster("local").setAppName("SusyStau")
 sc = SparkContext(conf = conf)
 
 def parseLine(line):
     fields = line.split()
     StauMass = float(fields[1])
-    return (1,StauMass)    
+    return (1,StauMass)
 
-lines = sc.textFile("dataset-supersymmetry-1.txt")
-stau = lines.map(parseLine)     #gives the mass as a list key-value pairs
-lighteststau=stau.reduceByKey(lambda x,y: min(x,y))       #find the minimum value
+lines = sc.textFile("dataset-supersymmetry-full.txt")
+stau = lines.map(parseLine)
+lighteststau=stau.reduceByKey(lambda x,y: min(x,y))
 results = stau.collect()
-
 
 
 print "The lighest Stau mass is = " + str(lighteststau.collect()[0][1])+" GeV"
