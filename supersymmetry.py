@@ -11,7 +11,7 @@ sc = SparkContext(conf = conf)
 def parseLine(line):
     fields = line.split()
     StauMass = float(fields[1])
-    return (1,StauMass)
+    return (1,StauMass)     # returns the mass of the stau as the value in the key value pair with key as 1
 
 lines = sc.textFile("dataset-supersymmetry-full.txt")
 stau = lines.map(parseLine)
